@@ -4,9 +4,7 @@ import './index.css';
 import Example from './App';
 
 ReactDOM.render(
-  <React.StrictMode>
-    <Example />
-  </React.StrictMode>,
+    <Example />,
   document.getElementById('root')
 );
 

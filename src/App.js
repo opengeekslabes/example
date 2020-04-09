@@ -5,13 +5,9 @@ import './index.css'
 class Example extends Component {
     constructor(props) {
     super(props);
-    this.state = { 
-        cards: []
-    }
 };
 
   render() {  
-   let cards = this.state;
    return (
     <div className="container mt-5">
       <div className="h1">
@@ -26,33 +22,38 @@ class Example extends Component {
 class Info extends Component {
     constructor(props) {
     super(props);
-    this.state = { count: 0, value: "" };
+    this.state = { value: "", arr: [] };
 
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   };
 
-  onClick = () => {
-    this.setState(({ count }) => ({
-      count: count + 1,
-    }));
-    
-  }
-
-  onChange = (event) => {
+  handleChange(event) {
     this.setState({value: event.target.value});
   }
 
+  handleSubmit(props) {
+     this.state.arr.push(this.state.value)
+     console.log(this.state.arr)
+  }
+
   render() { 
-   let value = this.state.value; 
    return (
     <div className="container mt-5">
         <form className="form-group">
-            <input type="text" className="form-control" placeholder="some text" onChange={this.onChange}/>
-            <button type="button" className="btn btn-light" onClick={this.onClick}>Add</button>
+            <input type="text" className="form-control" placeholder="some text" onChange={this.handleChange}/>
+            <button type="button" className="btn btn-light" onClick={this.handleSubmit}>Add</button>
         </form>
-        {[...Array(this.state.count)].map(() => <li>{value}</li>)}
+        <ul>{this.state.arr.map((item) => <li>{item}</li>)}</ul>
     </div>
     )
   }
 }
 
+
+
 export default Example;
+
+
+
+
