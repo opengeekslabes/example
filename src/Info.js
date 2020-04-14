@@ -10,7 +10,7 @@ class Info extends Component {
     this.setState({name: event.target.value});
   } else if (event.target.name === "surname") {
     this.setState({surname: event.target.value});
-  } else {
+  } else if (event.target.name === "job"){
     this.setState({job: event.target.value});
   }
 };
@@ -23,28 +23,22 @@ class Info extends Component {
     }
     arr.push(`My name is ${name} ${surname}, ${job}`);
     this.setState({ arr });
-
-    let container = document.querySelector("#infoForm");
-    let inputs = container.querySelectorAll("input");
-    inputs.forEach(item => item.value = "");
-    this.setState({name: ""});
-    this.setState({surname: ""});
-    this.setState({job: ""});
+    this.setState({name: "", surname: "", job: ""});
   };
 
-  handleRemove = (event) => {
-    let result;
+  handleRemove = (ind) => {
     const {arr} = this.state;
-    let i = event.target.parentElement.getAttribute('attr');
 
-    result = arr.filter((item, index) => {
-    return +i !== index
+    let result = arr.filter((item, index) => {
+    return ind !== index
     });
 
     this.setState({ arr: result });
   };
 
   render() {
+    const {name, surname, job} = this.state;
+
     return (
       <div className="container mt-5">
         <form id="infoForm" className="form-group">
@@ -52,6 +46,7 @@ class Info extends Component {
             required
             name="name"
             type="text"
+            value={name}
             className="form-control mb-3"
             placeholder="name"
             onChange={this.handleChange}
@@ -60,6 +55,7 @@ class Info extends Component {
             required
             name="surname"
             type="text"
+            value={surname}
             className="form-control mb-3"
             placeholder="surname"
             onChange={this.handleChange}
@@ -68,6 +64,7 @@ class Info extends Component {
             required
             name="job"
             type="text"
+            value={job}
             className="form-control mb-3"
             placeholder="job"
             onChange={this.handleChange}
@@ -85,7 +82,7 @@ class Info extends Component {
             <div key={index} attr={index} className="p-2 mt-2 border border-light">
               <div className="d-flex justify-content-between align-items-center">
                 <span className="h5">{item}</span>
-                <button type="button" className="btn btn-light" onClick={this.handleRemove}>Remove</button>
+                <button type="button" className="btn btn-light" onClick={() => this.handleRemove(index)}>Remove</button>
               </div>
               <Tasks errorMessage = {this.state.errorMessage}/>
             </div>
