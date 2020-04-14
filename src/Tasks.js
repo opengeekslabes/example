@@ -5,7 +5,9 @@ class Tasks extends Component {
   state = { value: "", 
     arr: [], 
     taskValue: true, 
-    editareaValue: "" };
+    editareaValue: "",
+    doneFlag: false,
+    editIndex: "" };
 
   handleChange = (event) => {
     if(event.target.name === "example") {
@@ -36,24 +38,33 @@ class Tasks extends Component {
     this.setState({ arr: result });
   };
 
-  handleEdit = (index, item) => {
+  handleEdit = (item, index) => {
+    this.setState({ editIndex: index })
     let taskValue = this.state.taskValue;
     this.setState({taskValue : !(taskValue)})
     console.log(index + " " + item)
   };
 
-  handleSave = (index, item) => {
+  handleSave = (item, index) => {
     let {arr, editareaValue} = this.state;
     let value = !editareaValue ? item : editareaValue;
+    arr[index] = value;
+    this.setState({arr})
+
+    this.setState({ editIndex: "" })
     let taskValue = this.state.taskValue;
     this.setState({taskValue : !(taskValue)})
 
-    arr[index] = value;
-    this.setState({arr})
+
   };
 
+  handleDone = () => {
+    let {doneFlag} = this.state;
+    this.setState({doneFlag : !(doneFlag)})
+  }
+
   render() {
-  const {arr, value, taskValue} = this.state;
+  const {arr, value, taskValue, doneFlag, editIndex} = this.state;
   return  (
     <div className="form-group">
       <div className="h6">Add new tasks</div>
@@ -70,24 +81,30 @@ class Tasks extends Component {
       <ul>
           {arr.map((item, index) => (
             <div key={index} className="p-2 mt-2 border border-light">
-              <LiElement 
-                item = {item} 
-                taskValue = {taskValue}
-                handleChange = {this.handleChange.bind(this)}/> <hr/>
+                {editIndex !== index ? <li className="h6">{doneFlag === true ? `${item} ${String.fromCharCode(9745)} is done` : item}</li>
+                 :
+              <textarea 
+                className="h6" 
+                name="editArea" 
+                id="editArea" 
+                rows="2" 
+                defaultValue={item} 
+                onChange={this.handleChange}></textarea>}
+                <hr/>
               <button 
                 type="button" 
                 className="btn btn-light mr-4"
-                onClick={this.handleDone}>Done</button>
+                onClick={this.handleDone}>{String.fromCharCode(10004)}</button>
               <EditButton 
                 item = {item} 
                 index = {index} 
-                handleEdit = {this.handleEdit.bind(this)} 
-                handleSave = {this.handleSave.bind(this)} 
+                handleEdit = {() => this.handleEdit(item, index)} 
+                handleSave = {() => this.handleSave(item, index)} 
                 taskValue = {taskValue}/>
               <button 
                 type="button" 
                 className="btn btn-light" 
-                onClick={() => this.handleRemove(index)}>Remove</button>
+                onClick={() => this.handleRemove(index)}>{String.fromCharCode(10007)}</button>
             </div>
           ))}
       </ul>
@@ -96,25 +113,14 @@ class Tasks extends Component {
   }
 };
 
-function LiElement (props) {
-  return props.taskValue === true ? <li className="h6">{props.item}</li> :
-  <textarea 
-    className="h6" 
-    name="editArea" 
-    id="editArea" 
-    rows="2" 
-    defaultValue={props.item} 
-    onChange={props.handleChange}></textarea>
-}
-
 function EditButton (props) {
   return props.taskValue === true ? 
   <button type="button" 
     className="btn btn-light mr-4" 
-    onClick={() => props.handleEdit(props.index, props.item)}>Edit</button> :
+    onClick={() => props.handleEdit()}>{String.fromCharCode(9998)}</button> :
   <button type="button" 
     className="btn btn-light mr-4" 
-    onClick={() => props.handleSave(props.index, props.item)}>Save</button>
+    onClick={() => props.handleSave()}>{String.fromCharCode(10000)}</button>
 }
 
 export default Tasks;
