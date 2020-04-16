@@ -3,27 +3,25 @@ import Tasks from './Tasks';
 import './index.css'
 
 class Info extends Component {
-  state = { name: "", surname: "", job: "", errorMessage: "Empty fields!", arr: [] };
+  state = { title: "", description: "", errorMessage: "Empty fields!", arr: [] };
   
   handleChange = (event) => {
-    if(event.target.name === "name") {
-    this.setState({name: event.target.value});
-  } else if (event.target.name === "surname") {
-    this.setState({surname: event.target.value});
-  } else if (event.target.name === "job"){
-    this.setState({job: event.target.value});
-  }
+    if(event.target.name === "title") {
+    this.setState({title: event.target.value});
+  } else if (event.target.name === "description") {
+    this.setState({description: event.target.value});
+  } 
 };
 
-  handleSubmit = () => {
-    const { arr, name, surname, job, errorMessage } = this.state;
-    if(!(name && surname && job)) {
+  handleAdd = () => {
+    const { arr, title, description, errorMessage } = this.state;
+    if(!(title && description)) {
       alert(errorMessage)
       return
     }
-    arr.push(`My name is ${name} ${surname}, ${job}`);
-    this.setState({ arr });
-    this.setState({name: "", surname: "", job: ""});
+    let value = `Project: ${title} Description: ${description}`;
+    arr.push([Date.now(), value]);
+    this.setState({ arr, title: "", description: ""});
   };
 
   handleRemove = (ind) => {
@@ -37,49 +35,50 @@ class Info extends Component {
   };
 
   render() {
-    const {name, surname, job} = this.state;
+    const {arr, title, description} = this.state;
+    let arrValues = [];
+    let arrKeys = [];
+    for (let item of arr) {
+      arrValues.push(item[1]);
+      arrKeys.push(item[0]);
+    }
 
     return (
-      <div className="container mt-5">
+      <div className="container mt-5 border border-light rounded p-4">
         <form id="infoForm" className="form-group">
+          <label htmlFor="title">Title of your Project</label>
           <input
             required
-            name="name"
+            name="title"
+            id="title"
             type="text"
-            value={name}
+            value={title}
             className="form-control mb-3"
-            placeholder="name"
+            placeholder="title"
             onChange={this.handleChange}
           />
+          <label htmlFor="title">Description of your Project</label>
           <input
             required
-            name="surname"
+            name="description"
+            id="description"
             type="text"
-            value={surname}
+            value={description}
             className="form-control mb-3"
-            placeholder="surname"
-            onChange={this.handleChange}
-          />
-          <input
-            required
-            name="job"
-            type="text"
-            value={job}
-            className="form-control mb-3"
-            placeholder="job"
+            placeholder="description"
             onChange={this.handleChange}
           />
           <button
             type="button"
             className="btn btn-light"
-            onClick={this.handleSubmit}
+            onClick={this.handleAdd}
           >
             Add
           </button>
         </form>
         <ul>
-          {this.state.arr.map((item, index) => (
-            <div key={index} attr={index} className="p-2 mt-2 border border-light">
+          {arrValues.map((item, index) => (
+            <div key={arrKeys[index]} className="p-2 mt-2 border border-light">
               <div className="d-flex justify-content-between align-items-center">
                 <span className="h5">{item}</span>
                 <button type="button" className="btn btn-light" onClick={() => this.handleRemove(index)}>Remove</button>

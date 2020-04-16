@@ -1,10 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
+
+import Example from './Example';
 import './index.css';
-import Example from './App';
+import AutorisationForm from './AutorisationForm';
 
 ReactDOM.render(
-    <Example />,
+	<Router>
+        <Switch>
+            <Route exact path="/" component={AutorisationForm} />
+            <Route path="/example" component={Example} />
+        </Switch>
+   </Router>,
   document.getElementById('root')
 );
-

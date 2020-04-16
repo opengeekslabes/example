@@ -26,7 +26,7 @@ class Tasks extends Component {
       alert(this.props.errorMessage);
       return;
     }
-    arr.push([arr.length + 1, value]);
+    arr.push([Date.now(), value])
     this.setState({ arr, value: "" });
   };
 
