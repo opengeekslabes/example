@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import "./index.css";
 
 class Tasks extends Component {
   state = {
@@ -47,9 +46,7 @@ class Tasks extends Component {
   };
 
   handleEdit = (item, index) => {
-    this.setState({
-      editIndex: index
-    });
+    this.setState({ editIndex: index });
   };
 
   handleSave = (item, index) => {
@@ -58,7 +55,7 @@ class Tasks extends Component {
     arr[index][1] = value;
 
     this.setState({
-      arr,
+      arr, 
       editIndex: ""
     });
   };

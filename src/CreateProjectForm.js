@@ -1,9 +1,8 @@
 import React, { Component } from 'react'
 import Tasks from './Tasks';
-import './index.css'
 
-class Info extends Component {
-  state = { title: "", description: "", errorMessage: "Empty fields!", arr: [] };
+class CreateProjectForm extends Component {
+  state = { title: "", description: "", errorMessage: "Empty fields!", arr: [], id: 1 };
   
   handleChange = (event) => {
     if(event.target.name === "title") {
@@ -14,14 +13,18 @@ class Info extends Component {
 };
 
   handleAdd = () => {
-    const { arr, title, description, errorMessage } = this.state;
+    const { arr, title, description, errorMessage} = this.state;
+    let {id} = this.state;
+
     if(!(title && description)) {
       alert(errorMessage)
       return
     }
+
     let value = `Project: ${title} Description: ${description}`;
-    arr.push([Date.now(), value]);
-    this.setState({ arr, title: "", description: ""});
+    arr.push([Date.now(), `id: ${id} ${value}`]);
+    id++
+    this.setState({ arr, title: "", description: "", id});
   };
 
   handleRemove = (ind) => {
@@ -92,4 +95,4 @@ class Info extends Component {
   }
 }
 
-export default Info;
+export default CreateProjectForm;
