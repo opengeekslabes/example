@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import EditButton from './EditButton';
 
 class Tasks extends Component {
   state = {
@@ -11,21 +12,13 @@ class Tasks extends Component {
     doneIndexArr: []
   };
 
-  handleChange = event => {
-    if (event.target.name === "example") {
-      this.setState({ value: event.target.value });
-    } else if (event.target.name === "editArea") {
-      this.setState({ editAreaValue: event.target.value });
-    }
-  };
-
   handleAdd = () => {
     const { value, arr } = this.state;
     if (!value) {
       alert(this.props.errorMessage);
       return;
     }
-    arr.push([Date.now(), value])
+    arr.push({key: Date.now(), value: value})
     this.setState({ arr, value: "" });
   };
 
@@ -52,7 +45,7 @@ class Tasks extends Component {
   handleSave = (item, index) => {
     let { arr, editAreaValue } = this.state;
     let value = !editAreaValue ? item : editAreaValue;
-    arr[index][1] = value;
+    arr[index].value = value;
 
     this.setState({
       arr, 
@@ -62,7 +55,7 @@ class Tasks extends Component {
 
   handleDone = index => {
     let { arr, doneIndexArr } = this.state;
-    let id = arr[index][0];
+    let id = arr[index].key;
     let del = doneIndexArr.indexOf(id);
 
     doneIndexArr.includes(id)
@@ -73,12 +66,12 @@ class Tasks extends Component {
   };
 
   render() {
-    const { arr, value, doneIndexArr, editIndex } = this.state;
+    const { arr, value, doneIndexArr, editIndex, editAreaValue } = this.state;
     let arrValues = [];
     let arrKeys = [];
     for (let item of arr) {
-      arrValues.push(item[1]);
-      arrKeys.push(item[0]);
+      arrValues.push(item.value);
+      arrKeys.push(item.key);
     }
 
     return (
@@ -87,9 +80,9 @@ class Tasks extends Component {
         <textarea
           className="form-control"
           value={value}
-          name="example"
+          name="value"
           rows="2"
-          onChange={this.handleChange}
+          onChange={(e) => { this.setState({value: e.target.value} )}}
         />
         <button
           type="button"
@@ -114,7 +107,7 @@ class Tasks extends Component {
                   id="editArea"
                   rows="2"
                   defaultValue={item}
-                  onChange={this.handleChange}
+                  onChange={(e) => { this.setState({editAreaValue: e.target.value} )}}
                 />
               )}
               <hr />
@@ -145,26 +138,6 @@ class Tasks extends Component {
       </div>
     );
   }
-}
-
-function EditButton(props) {
-  return props.isEditing === true ? (
-    <button
-      type="button"
-      className="btn btn-light mr-4"
-      onClick={() => props.handleEdit()}
-    >
-      {String.fromCharCode(9998)}
-    </button>
-  ) : (
-    <button
-      type="button"
-      className="btn btn-light mr-4"
-      onClick={() => props.handleSave()}
-    >
-      {String.fromCharCode(10000)}
-    </button>
-  );
 }
 
 export default Tasks;

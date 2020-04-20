@@ -4,14 +4,6 @@ import "./index.css";
 class AutorisationForm extends Component {
   state = { email: "", password: "" };
 
-  handleChange = event => {
-    if (event.target.name === "inputEmail") {
-      this.setState({ email: event.target.value });
-    } else if (event.target.name === "inputPassword") {
-      this.setState({ password: event.target.value });
-    }
-  };
-
   handleSubmit = event => {
     event.preventDefault();
     let { email, password } = this.state;
@@ -42,7 +34,7 @@ class AutorisationForm extends Component {
               name="inputEmail"
               id="inputEmail"
               aria-describedby="emailHelp"
-              onChange={this.handleChange}
+              onChange={(e) => { this.setState({email: e.target.value} )}}
             />
             <small id="emailHelp" className="form-text text-muted">
               We'll never share your email with anyone else.
@@ -58,7 +50,7 @@ class AutorisationForm extends Component {
               name="inputPassword"
               id="inputPassword"
               aria-describedby="passwordHelp"
-              onChange={this.handleChange}
+              onChange={(e) => { this.setState({password: e.target.value} )}}
             />
             <small id="passwordHelp" className="form-text text-muted">
               Password must be at least 8 characters long.

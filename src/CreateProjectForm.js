@@ -4,14 +4,6 @@ import Tasks from './Tasks';
 class CreateProjectForm extends Component {
   state = { title: "", description: "", errorMessage: "Empty fields!", arr: [], id: 1 };
   
-  handleChange = (event) => {
-    if(event.target.name === "title") {
-    this.setState({title: event.target.value});
-  } else if (event.target.name === "description") {
-    this.setState({description: event.target.value});
-  } 
-};
-
   handleAdd = () => {
     const { arr, title, description, errorMessage} = this.state;
     let {id} = this.state;
@@ -22,7 +14,7 @@ class CreateProjectForm extends Component {
     }
 
     let value = `Project: ${title} Description: ${description}`;
-    arr.push([Date.now(), `id: ${id} ${value}`]);
+    arr.push({key: Date.now(), value: `id: ${id} ${value}`});
     id++
     this.setState({ arr, title: "", description: "", id});
   };
@@ -42,8 +34,8 @@ class CreateProjectForm extends Component {
     let arrValues = [];
     let arrKeys = [];
     for (let item of arr) {
-      arrValues.push(item[1]);
-      arrKeys.push(item[0]);
+      arrValues.push(item.value);
+      arrKeys.push(item.key);
     }
 
     return (
@@ -58,7 +50,7 @@ class CreateProjectForm extends Component {
             value={title}
             className="form-control mb-3"
             placeholder="title"
-            onChange={this.handleChange}
+            onChange={(e) => { this.setState({title: e.target.value} )}}
           />
           <label htmlFor="title">Description of your Project</label>
           <input
@@ -69,7 +61,7 @@ class CreateProjectForm extends Component {
             value={description}
             className="form-control mb-3"
             placeholder="description"
-            onChange={this.handleChange}
+            onChange={(e) => { this.setState({description: e.target.value} )}}
           />
           <button
             type="button"
